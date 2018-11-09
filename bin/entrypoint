@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/modified_file_filter"
+
+raw_event = File.read(ENV.fetch("GITHUB_EVENT_PATH"))
+file_path = ARGV.first
+filter = ModifiedFileFilter.new(raw_event)
+
+puts "Checking if #{file_path} was modified in this push..."
+
+if filter.modified?(file_path)
+  puts "#{file_path} was modified"
+  exit(0)
+else
+  puts "#{file_path} was not modified"
+  exit(1)
+end
