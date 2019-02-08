@@ -2,9 +2,14 @@
 
 require_relative "../lib/push_event"
 
-raw_event = File.read(ENV.fetch("GITHUB_EVENT_PATH"))
 file_path = ARGV.first
-push_event = PushEvent.new(raw_event)
+
+if file_path.nil? || file_path.length == 0
+  puts "ERROR: You must specify a file path in the args for this Action."
+  exit(1)
+end
+
+push_event = PushEvent.new(File.read(ENV.fetch("GITHUB_EVENT_PATH")))
 
 unless push_event.valid?
   puts "ERROR: This Action can only be run as part of a workflow triggered by a push event."
