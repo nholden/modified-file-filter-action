@@ -22,7 +22,24 @@ class PushEvent
   private
 
   def modified_file_paths
-    @modified_file_paths ||= commits.map(&:modified_file_paths).flatten.compact.uniq
+    @modified_file_paths ||= if pull_request_merge?
+      head_commit.modified_file_paths
+    else
+      commits.map(&:modified_file_paths).flatten.compact.uniq
+    end
+  end
+
+  def pull_request_merge?
+    return false if head_commit.nil?
+    head_commit.message.match?(/Merge pull request/)
+  end
+
+  def head_commit
+    @head_commit ||= if data["head_commit"].nil?
+      nil
+    else
+      Commit.new(data["head_commit"])
+    end
   end
 
   def commits

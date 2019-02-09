@@ -48,4 +48,86 @@ class PushEventTest < Minitest::Test
 
     refute_predicate invalid_event, :valid?
   end
+
+  def test_considers_only_head_commit_when_merging_pull_request
+    event_string = <<-JSON
+      {
+        "ref": "refs/heads/another-branch",
+        "head_commit": {
+          "message": "Merge pull request #1",
+          "modified": [
+            "app/models/user.rb"
+          ]
+        },
+        "commits": [
+          {
+            "message": "Merge pull request #1",
+            "modified": [
+              "app/models/user.rb"
+            ]
+          },
+          {
+            "message": "Revert changes to order",
+            "modified": [
+              "app/models/order.rb"
+            ]
+          },
+          {
+            "message": "Make some changes",
+            "modified": [
+              "app/models/user.rb",
+              "app/models/order.rb"
+            ]
+          }
+        ]
+      }
+    JSON
+
+    push_event = PushEvent.new(event_string)
+
+    assert push_event.modified?("app/models/user.rb")
+    refute push_event.modified?("app/models/order.rb")
+    refute @push_event.modified?("app/models/action.rb")
+  end
+
+  def test_considers_all_commits_when_not_merging_pull_request
+    event_string = <<-JSON
+      {
+        "ref": "refs/heads/another-branch",
+        "head_commit": {
+          "message": "Make some other changes",
+          "modified": [
+            "app/models/user.rb"
+          ]
+        },
+        "commits": [
+          {
+            "message": "Make some other changes",
+            "modified": [
+              "app/models/user.rb"
+            ]
+          },
+          {
+            "message": "Revert changes to order",
+            "modified": [
+              "app/models/order.rb"
+            ]
+          },
+          {
+            "message": "Make some changes",
+            "modified": [
+              "app/models/user.rb",
+              "app/models/order.rb"
+            ]
+          }
+        ]
+      }
+    JSON
+
+    push_event = PushEvent.new(event_string)
+
+    assert push_event.modified?("app/models/user.rb")
+    assert push_event.modified?("app/models/order.rb")
+    refute @push_event.modified?("app/models/action.rb")
+  end
 end
