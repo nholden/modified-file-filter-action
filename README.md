@@ -7,6 +7,8 @@ Only use this Action in workflows triggered by `push` events.
 
 Let’s say you have a repository with a file located at `db/structure.sql` and you want to receive an alert in Slack each time that file is modified. You could [create a new workflow](https://help.github.com/articles/creating-a-workflow-with-github-actions/) with Modified File Filter and [Slack for GitHub Actions](https://github.com/Ilshidur/action-slack).
 
+![screen shot 2019-02-09 at 10 49 29 am](https://user-images.githubusercontent.com/7942714/52525036-7ef15480-2c58-11e9-807e-c999e9c297a1.png)
+
 ```hcl
 workflow "Database change alert" {
   on = "push"
