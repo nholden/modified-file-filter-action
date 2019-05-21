@@ -15,8 +15,12 @@ class PushEvent
     REQUIRED_PUSH_EVENT_KEYS.all? { |required_key| data.keys.include?(required_key) }
   end
 
+  def modified_files(*file_paths)
+    modified_file_paths.select{ |f| ! file_paths.select{ |p| File.fnmatch(p, f) }.empty? }
+  end
+
   def modified?(*file_paths)
-    ! modified_file_paths.select{ |f| ! file_paths.select{ |p| File.fnmatch(p, f) }.empty? }.empty?
+    ! modified_files(*file_paths).empty?
   end
 
   private
