@@ -2,7 +2,7 @@
 
 require_relative "../lib/push_event"
 
-file_paths = ARGV.filter{ |p| p.nil? || p.length == 0 }
+file_paths = ARGV.reject{ |p| p.nil? || p.length == 0 }
 
 if file_paths.empty?
   puts "ERROR: You must specify at least one file path or glob in the args for this Action."
