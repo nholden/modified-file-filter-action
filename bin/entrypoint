@@ -23,5 +23,5 @@ if push_event.modified?(file_path)
   exit(0)
 else
   puts "#{file_path} was not modified"
-  exit(1)
+  exit(78)
 end
