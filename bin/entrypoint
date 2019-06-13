@@ -2,10 +2,10 @@
 
 require_relative "../lib/push_event"
 
-file_path = ARGV.first
+file_paths = ARGV.reject{ |p| p.nil? || p.length == 0 }
 
-if file_path.nil? || file_path.length == 0
-  puts "ERROR: You must specify a file path in the args for this Action."
+if file_paths.empty?
+  puts "ERROR: You must specify at least one file path or glob in the args for this Action."
   exit(1)
 end
 
@@ -16,12 +16,14 @@ unless push_event.valid?
   exit(1)
 end
 
-puts "Checking if #{file_path} was modified in this push..."
+puts "Checking for modified files in this push that match:", file_paths.map{ |f| " - #{f}" }
 
-if push_event.modified?(file_path)
-  puts "#{file_path} was modified"
-  exit(0)
-else
-  puts "#{file_path} was not modified"
+modified_files = push_event.modified_files(*file_paths)
+
+if modified_files.empty?
+  puts "No files were modified"
   exit(78)
+else
+  puts "The following files were modified:", modified_files.map{ |f| " - #{f}" }
+  exit(0)
 end
