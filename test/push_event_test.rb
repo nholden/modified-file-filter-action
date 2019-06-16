@@ -130,4 +130,17 @@ class PushEventTest < Minitest::Test
     assert push_event.modified?("app/models/order.rb")
     refute @push_event.modified?("app/models/action.rb")
   end
+
+  def test_glob_pattern
+    assert @push_event.modified?("app/models/*")
+    assert @push_event.modified?("**")
+    refute @push_event.modified?("app/other/*")
+  end
+
+  def test_multiple_file_paths
+    assert @push_event.modified?("app/models/user.rb", "app/models/order.rb")
+    assert @push_event.modified?("app/models/user.rb", "app/models/action.rb")
+    refute @push_event.modified?("app/models/action.rb", "app/models/other.rb")
+  end
+
 end
