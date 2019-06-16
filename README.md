@@ -1,6 +1,6 @@
 # 📄 Modified File Filter for GitHub Actions
 
-This GitHub Action halts a workflow unless the file in the path specified in `args` has been modified.
+This GitHub Action halts a workflow unless the file(s) in the path specified in `args` has been modified.
 Only use this Action in workflows triggered by `push` events.
 
 ## Usage
@@ -29,6 +29,18 @@ action "Alert" {
 ```
 
 The next time anyone pushes to the repository, if any of the commits in the push modify `db/structure.sql`, the `Check` Action will pass, triggering the `Alert` Action, which will send you a message in Slack. If none of the commits in the push modify `db/structure.sql`, the `Check` Action will fail, and the `Alert` Action will not be triggered.
+
+### Arguments
+
+The argument is the path to one or more files. The action will pass if any of the matched files is modified.
+
+[Glob patterns](https://en.wikipedia.org/wiki/Glob_(programming)) can also be used.
+
+#### Examples
+
+* `args = "db/structure.sql"`
+* `args = "db/structure.sql model/*"`
+* `args = ["db/*" "model/*"]`
 
 ## A special case: pull request merges
 
