@@ -9,5 +9,16 @@ steps:
     versionSpec: '>= 2.6'
     addToPath: true
 
+- script: |
+    CALL gem install bundler
+    bundle install --retry=3 --jobs=4
+  displayName: 'bundle install'
+
 - script: bundle exec rake
   displayName: 'bundle exec rake'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFiles: 'test/reports/TEST-*.xml'
+    testRunTitle: 'Ruby tests'

@@ -1,4 +1,4 @@
-require "minitest/autorun"
+require "test_helper"
 require_relative "../lib/push_event"
 
 class PushEventTest < Minitest::Test
