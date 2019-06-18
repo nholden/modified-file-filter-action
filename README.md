@@ -35,3 +35,19 @@ The next time anyone pushes to the repository, if any of the commits in the push
 With most pushes, Modified File Filter will look at all of the commits in the push and will pass if any of the individual commits modify the specified file. However, merging a pull request triggers a push event, and for those pushes, Modified File Filter will only look at the merge commit and will not look at any of the individual commits in the pull request.
 
 This special case prevents Modified File Filter from passing the specified file is changed in multiple commits in a pull request but there are ultimately no net changes to the file in the base branch when the pull request is merged.
+
+## Contributing
+
+Contributions are welcome from anyone! Feel free to make a pull request or use GitHub issues for help getting started, to report bugs, or to make feature requests.
+
+### Installing dependencies
+
+```
+bundle install
+```
+
+### Running tests
+
+```
+bundle exec rake
+```
