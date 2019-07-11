@@ -19,10 +19,6 @@ class PushEvent
     modified_file_paths.select{ |f| ! file_paths.select{ |p| File.fnmatch(p, f) }.empty? }
   end
 
-  def modified?(*file_paths)
-    modified_files(*file_paths).any?
-  end
-
   private
 
   def modified_file_paths
