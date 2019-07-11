@@ -20,7 +20,7 @@ class PushEvent
   end
 
   def modified?(*file_paths)
-    ! modified_files(*file_paths).empty?
+    modified_files(*file_paths).any?
   end
 
   private
