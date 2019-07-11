@@ -34,7 +34,7 @@ The next time anyone pushes to the repository, if any of the commits in the push
 
 The argument is the path to one or more files. The Action will pass if any of the matched files is modified.
 
-[Glob patterns](https://en.wikipedia.org/wiki/Glob_(programming)) can also be used.
+[Glob patterns](https://en.wikipedia.org/wiki/Glob_(programming)) can also be used. See documentation of [File.fnmatch](https://ruby-doc.org/core-2.6.3/File.html#method-c-fnmatch). 
 
 #### Examples
 
