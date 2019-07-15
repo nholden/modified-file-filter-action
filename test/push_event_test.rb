@@ -25,9 +25,9 @@ class PushEventTest < Minitest::Test
   end
 
   def test_modified_file_paths
-    assert @push_event.modified?("app/models/user.rb")
-    assert @push_event.modified?("app/models/order.rb")
-    refute @push_event.modified?("app/models/action.rb")
+    assert @push_event.modified_files("app/models/user.rb").any?
+    assert @push_event.modified_files("app/models/order.rb").any?
+    refute @push_event.modified_files("app/models/action.rb").any?
   end
 
   def test_valid_event
@@ -85,9 +85,9 @@ class PushEventTest < Minitest::Test
 
     push_event = PushEvent.new(event_string)
 
-    assert push_event.modified?("app/models/user.rb")
-    refute push_event.modified?("app/models/order.rb")
-    refute @push_event.modified?("app/models/action.rb")
+    assert push_event.modified_files("app/models/user.rb").any?
+    refute push_event.modified_files("app/models/order.rb").any?
+    refute @push_event.modified_files("app/models/action.rb").any?
   end
 
   def test_considers_all_commits_when_not_merging_pull_request
@@ -126,8 +126,21 @@ class PushEventTest < Minitest::Test
 
     push_event = PushEvent.new(event_string)
 
-    assert push_event.modified?("app/models/user.rb")
-    assert push_event.modified?("app/models/order.rb")
-    refute @push_event.modified?("app/models/action.rb")
+    assert push_event.modified_files("app/models/user.rb").any?
+    assert push_event.modified_files("app/models/order.rb").any?
+    refute @push_event.modified_files("app/models/action.rb").any?
   end
+
+  def test_glob_pattern
+    assert @push_event.modified_files("app/models/*").any?
+    assert @push_event.modified_files("**").any?
+    refute @push_event.modified_files("app/other/*").any?
+  end
+
+  def test_multiple_file_paths
+    assert @push_event.modified_files("app/models/user.rb", "app/models/order.rb").any?
+    assert @push_event.modified_files("app/models/user.rb", "app/models/action.rb").any?
+    refute @push_event.modified_files("app/models/action.rb", "app/models/other.rb").any?
+  end
+
 end
