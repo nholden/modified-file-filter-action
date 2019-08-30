@@ -3,6 +3,8 @@
 This GitHub Action halts a workflow unless the file(s) in the path specified in `args` has been modified.
 Only use this Action in workflows triggered by `push` events.
 
+⚠️ *August 2019 update:* GitHub Actions now [supports this behavior natively](https://help.github.com/en/articles/workflow-syntax-for-github-actions#onpushpull_requestpaths)! I recommend trying the behavior built into the new workflow syntax before using this Action.
+
 ## Usage
 
 Let’s say you have a repository with a file located at `db/structure.sql` and you want to receive an alert in Slack each time that file is modified. You could [create a new workflow](https://help.github.com/articles/creating-a-workflow-with-github-actions/) with Modified File Filter and [Slack for GitHub Actions](https://github.com/Ilshidur/action-slack).
