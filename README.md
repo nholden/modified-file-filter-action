@@ -3,6 +3,8 @@
 This GitHub Action halts a workflow unless the file(s) in the path specified in `args` has been modified.
 Only use this Action in workflows triggered by `push` events.
 
+🚫*February 2020 update:* This Action is no longer supported, as the push payload [no longer includes modified files](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/events-that-trigger-workflows#push-event-push). We could update this Action to make API calls for each individual commit in a push to check for modified files, but since checking for modified files is [now supported natively](https://help.github.com/en/articles/workflow-syntax-for-github-actions#onpushpull_requestpaths), I've decided to sunset this Action.
+
 ⚠️ *August 2019 update:* GitHub Actions now [supports this behavior natively](https://help.github.com/en/articles/workflow-syntax-for-github-actions#onpushpull_requestpaths)! I recommend trying the behavior built into the new workflow syntax before using this Action.
 
 ## Usage
